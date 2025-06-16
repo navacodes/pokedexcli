@@ -7,15 +7,16 @@ import (
 	"net/http"
 )
 
-func commandMap(cfg *config) error {
-
+func commandMapb(cfg *config) error {
 	var url string
 
-	if cfg.nextLocationAreaURL == nil {
-		url = "https://pokeapi.co/api/v2/location-area"
-	} else {
-		url = *cfg.nextLocationAreaURL
+	if cfg.previousLocationAreaURL == nil {
+		fmt.Println("you're on the first page")
+		return nil
+
 	}
+	url = *cfg.previousLocationAreaURL
+
 	res, err := http.Get(url)
 
 	if err != nil {
@@ -37,8 +38,8 @@ func commandMap(cfg *config) error {
 	for _, location := range LocationAreasResponse.Results {
 		fmt.Println(location.Name)
 	}
-
 	cfg.nextLocationAreaURL = LocationAreasResponse.Next
 	cfg.previousLocationAreaURL = LocationAreasResponse.Previous
+
 	return nil
 }
