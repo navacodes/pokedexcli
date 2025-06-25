@@ -17,6 +17,26 @@ func commandMapb(cfg *config) error {
 	}
 	url = *cfg.previousLocationAreaURL
 
+	//check for cache first
+
+	var response LocationAreasResponse
+	if cachedData, found := cfg.cache.Get(url); found {
+		fmt.Println("Using cached data!")
+
+		//Parse the cached response
+		if err := json.Unmarshal(cachedData, &response); err != nil {
+			return err
+		}
+		for _, location := range response.Results {
+			fmt.Println(location.Name)
+		}
+
+		cfg.nextLocationAreaURL = response.Next
+		cfg.previousLocationAreaURL = response.Previous
+		return nil
+	}
+
+	//no cache -- make HTTP request
 	res, err := http.Get(url)
 
 	if err != nil {
@@ -29,17 +49,16 @@ func commandMapb(cfg *config) error {
 	if err != nil {
 		fmt.Println("error:", err)
 	}
-
-	var LocationAreasResponse LocationAreasResponse
-	if err := json.Unmarshal(body, &LocationAreasResponse); err != nil {
+	cfg.cache.Add(url, body)
+	if err := json.Unmarshal(body, &response); err != nil {
 		fmt.Println("Error Unmarshal:", err)
 	}
 
-	for _, location := range LocationAreasResponse.Results {
+	for _, location := range response.Results {
 		fmt.Println(location.Name)
 	}
-	cfg.nextLocationAreaURL = LocationAreasResponse.Next
-	cfg.previousLocationAreaURL = LocationAreasResponse.Previous
+	cfg.nextLocationAreaURL = response.Next
+	cfg.previousLocationAreaURL = response.Previous
 
 	return nil
 }
