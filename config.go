@@ -11,7 +11,7 @@ type config struct {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*config) error
+	callback    func(*config, string) error
 }
 type LocationAreasResponse struct {
 	Count    int            `json:"count"`
@@ -21,6 +21,19 @@ type LocationAreasResponse struct {
 }
 
 type LocationArea struct {
+	Name string `json:"name"`
+	URL  string `json:"url"`
+}
+
+// Ecounters - Pokemon encounters structs , these retrive the pokemont located at the LocationArea
+type Encounters struct {
+	PokemonEncounters []Pokemon `json:"pokemon_encounters"`
+}
+
+type Pokemon struct {
+	Pokemon PokemonInfo `json:"pokemon"`
+}
+type PokemonInfo struct {
 	Name string `json:"name"`
 	URL  string `json:"url"`
 }

@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func commandMapb(cfg *config) error {
+func commandMapb(cfg *config, areaName string) error {
 	var url string
 
 	if cfg.previousLocationAreaURL == nil {

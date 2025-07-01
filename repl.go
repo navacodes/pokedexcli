@@ -23,8 +23,16 @@ func startRepl(cfg *config) {
 		commandName := words[0] // grab the command
 		cmd, exists := getCommands()[commandName]
 
+		var areaName string
+
+		if len(words) > 1 {
+			areaName = words[1]
+		} else {
+			areaName = ""
+		}
+
 		if exists {
-			err := cmd.callback(cfg)
+			err := cmd.callback(cfg, areaName)
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -63,6 +71,11 @@ func getCommands() map[string]cliCommand {
 			name:        "mapb",
 			description: "Display previous 20 location areas",
 			callback:    commandMapb,
+		},
+		"explore": {
+			name:        "explore",
+			description: "Display pokemons in area",
+			callback:    commandExplore,
 		},
 	}
 

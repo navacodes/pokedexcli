@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func commandMap(cfg *config) error {
+func commandMap(cfg *config, areaName string) error {
 
 	var url string
 
