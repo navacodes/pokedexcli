@@ -6,6 +6,7 @@ type config struct {
 	nextLocationAreaURL     *string
 	previousLocationAreaURL *string
 	cache                   *pokecache.Cache
+	caughtPokemon           map[string]PokemonCatch
 }
 
 type cliCommand struct {
@@ -36,4 +37,8 @@ type Pokemon struct {
 type PokemonInfo struct {
 	Name string `json:"name"`
 	URL  string `json:"url"`
+}
+type PokemonCatch struct {
+	Name           string `json:"name"`
+	BaseExperience int    `json:"base_experience"`
 }
