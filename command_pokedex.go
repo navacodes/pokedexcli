@@ -9,8 +9,6 @@ func commandPokedex(cfg *config, areaName string) error {
 	}
 	fmt.Println("Your Pokedex:")
 
-	//loop through caughtPokemon and print them out
-	//map[string]PokemonCaught
 	for _, pokemon := range cfg.caughtPokemon {
 		fmt.Printf("- %s\n", pokemon.Name)
 	}
